@@ -25,7 +25,8 @@ let library = [
         1953,
         "Science Fiction",
         "img/ray_bradbury_fahrenheit_451.png",
-        "Guy Montag is a fireman. His job is to destroy the most illegal of commodities, the printed book, along with the houses in which they are hidden. Montag never questions the destruction and ruin his actions produce, returning each day to his bland life and wife, Mildred, who spends all day with her television “family.” But when he meets an eccentric young neighbor, Clarisse, who introduces him to a past where people didn’t live in fear and to a present where one sees the world through the ideas in books instead of the mindless chatter of television, Montag begins to question everything he has ever known."
+        "Guy Montag is a fireman. His job is to destroy the most illegal of commodities, the printed book, along with the houses in which they are hidden. Montag never questions the destruction and ruin his actions produce, returning each day to his bland life and wife, Mildred, who spends all day with her television “family.” But when he meets an eccentric young neighbor, Clarisse, who introduces him to a past where people didn’t live in fear and to a present where one sees the world through the ideas in books instead of the mindless chatter of television, Montag begins to question everything he has ever known.",
+        true
     ),
     new Book(
         "The Road",
@@ -40,16 +41,16 @@ let library = [
 
 /* Functions */
 
-function Book(author, title, pages, year, genre, pictureUrl, description) {
+function Book(title, author, pages, year, genre, coverUrl, description, read = false) {
     this.uuid = generateUUID();
     this.author = author;
     this.title = title;
     this.pages = pages;
     this.year = year;
     this.genre = genre;
-    this.pictureUrl = pictureUrl;
+    this.coverUrl = coverUrl;
     this.description = description;
-    this.read = false;
+    this.read = read || false;
 }
 
 Book.prototype.toggleRead = function() {
@@ -69,6 +70,49 @@ function deleteBookFromLibrary(instance) {
 
 /* Handle document elements */
 
+// Set classes and element text according to the bookRead argument
+function setReadBookElementAttributes(bookRead, readButton, bookDiv) {
+    if (bookRead) {
+        readButton.innerText = "Mark as unread";
+        readButton.classList.remove("button-green");
+        readButton.classList.add("button-yellow");
+        bookDiv.classList.add("book-read");
+    } else {
+        readButton.innerText = "Mark as read";
+        readButton.classList.remove("button-yellow");
+        readButton.classList.add("button-green");
+        bookDiv.classList.remove("book-read");
+    }
+}
+
+const insertBookForm = document.querySelector("#insertBookForm");
+const insertBookButton = document.querySelector("#insertBookButton");
+
+if(insertBookButton) {
+    insertBookButton.addEventListener("click", function(event) {
+        event.preventDefault();
+        
+        // Verify the form is valid
+        insertBookForm.checkValidity();
+        if(insertBookForm.reportValidity()) {
+            // Parse form
+            const formData = new FormData(insertBookForm);
+            const newBook = new Book(
+                formData.get("title"),
+                formData.get("author"),
+                formData.get("pages"),
+                formData.get("year"),
+                formData.get("genre"),
+                formData.get("coverurl"),
+                formData.get("description"),
+                (formData.get("read") === 'on' ? true : false)
+            );
+            
+            console.log(newBook);
+        }
+    });
+}
+
 const booksContainer = document.querySelector("#booksContainer");
 
 if(booksContainer) {
@@ -82,7 +126,7 @@ if(booksContainer) {
 
         const bookCover = document.createElement("img");
         bookCover.classList.add("book-cover");
-        bookCover.setAttribute("src", book.pictureUrl);
+        bookCover.setAttribute("src", book.coverUrl);
         bookTop.appendChild(bookCover);
 
         const bookInfo = document.createElement("div");
@@ -118,25 +162,17 @@ if(booksContainer) {
         bookDescription.innerText = book.description || "";
         bookBottom.appendChild(bookDescription);
 
+        // Mark as read/unread button
         const readButton = document.createElement("button");
-        readButton.innerText = book.read === true ? "Mark as unread" : "Mark as read";
         readButton.classList.add("button");
-        readButton.classList.add(book.read === true ? "button-yellow" : "button-green");
+        setReadBookElementAttributes(book.read, readButton, bookDiv);
         readButton.addEventListener("click", function(event) {
             const button = event.target;
             book.toggleRead(true);
-            
-            if(book.read == true) {
-                readButton.innerText = "Mark as unread";
-                readButton.classList.remove("button-green");
-                readButton.classList.add("button-yellow");
-            } else {
-                readButton.innerText = "Mark as read";
-                readButton.classList.remove("button-yellow");
-                readButton.classList.add("button-green");
-            }
+            setReadBookElementAttributes(book.read, readButton, bookDiv);
         });
 
+        // Delete button
         const deleteBook = document.createElement("button");
         deleteBook.innerText = "Remove";
         deleteBook.classList.add("button", "button-red");
@@ -147,6 +183,7 @@ if(booksContainer) {
             }
         });
         
+        // Create buttons container and add the buttons
         const bookButtons = document.createElement("div");
         bookButtons.classList.add("buttons-container");
         bookButtons.appendChild(readButton);

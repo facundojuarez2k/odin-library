@@ -18,37 +18,36 @@
     <main class="main">
 
         <div class="books-container" id="booksContainer">
-            <!-- 
-            <div class="book">
+            <div>
+                <h4>Add a book</h4>
+                <form id="insertBookForm" class="form">
+                    <label>Title</label>
+                    <input type="text" name="title" required="required" placeholder="Title" />
 
-                <div class="book-top">
-                    <img src="img/stephen_king_it.png" class="book-cover" />
-                    <div class="book-info">
-                        <div>
-                            Title: <span class="book-info-title">IT</span>
-                        </div>
-                        <div>
-                            Author: <span class="book-info-author">Stephen King</span>
-                        </div>
-                        <div>
-                            Pages: <span class="book-info-pages">45</span>
-                        </div>
-                        <div>
-                            Year: <span class="book-info-year">1986</span>
-                        </div>
-                        <div>
-                            Genre: <span class="book-info-genre">Horror</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="book-bottom">
-                    <p class="book-info-synopsis">
-                        IT is the 22nd book published by Stephen King. It was his 18th novel, and the 13th novel written under his own name. The book was released by Viking on September 15, 1986. It was one of the best selling novels in the United States of that year and is now considered a "modern masterpiece" of the horror genre in literature.
-                    </p>
-                </div>
+                    <label>Author</label>
+                    <input type="text" name="author" required="required" placeholder="Author name" />
 
+                    <label>Year</label>
+                    <input type="number" name="year" required="required" placeholder="Year" />
+
+                    <label>Genre</label>
+                    <input type="text" name="genre" required="required" placeholder="Genre" />
+
+                    <label>Pages</label>
+                    <input type="number" name="pages" required="required" placeholder="Number of pages" />
+
+                    <label>Description</label>
+                    <textarea name="description" required="required" maxlength="400" rows="5" cols="50" placeholder="Add a short description"></textarea>
+
+                    <label>Book cover URL</label>
+                    <input type="text" name="coverurl" placeholder="https://..." />
+
+                    <label>Read</label>
+                    <input type="checkbox" name="read" />
+
+                    <button id="insertBookButton" class="button button-blue">Add</button>
+                </form>
             </div>
-            -->
         </div>
 
     </main>

@@ -17,13 +17,30 @@
 }
 
 .book {
+    position: relative;
     display: flex;
     flex-direction: column;
     padding: 15px;
     box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
     border-radius: 10px;
     gap: 10px;
-    background-color: rgb(255, 249, 227)
+    background-color: rgb(255, 249, 227);
+    border: 5px solid transparent;
+}
+
+.book.book-read {
+    
+}
+
+.book.book-read::after {
+    position: absolute;
+    right: 15px;
+    top: 5px;
+    content: "READ ✓";
+    font-family: monospace;
+    font-weight: 600;
+    font-size: 1.3em;
+    color:firebrick;
 }
 
 .book-top {
@@ -91,6 +108,22 @@
 .button-yellow {
     background-color: rgb(247, 255, 139);
     color: rgb(58, 58, 58);
+}
+
+.button-blue {
+    background-color:lightsteelblue;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form input {
+    border-radius: 3px;
+    border: 1px solid rgb(134, 134, 134);
+    padding: 5px;
 }
 
 @media (max-width: 480px) {
