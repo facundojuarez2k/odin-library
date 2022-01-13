@@ -200,6 +200,8 @@ if(insertBookButton) {
             
             addBookToLibrary(newBook);
             createBookDOMElement(newBook);
+            insertBookForm.reset(); //Reset form
+            appendNotification(`New book added with UUID: ${newBook.uuid}`);
         }
     });
 }

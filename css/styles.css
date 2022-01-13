@@ -2,7 +2,12 @@
     box-sizing: border-box;
 }
 
+body {
+    margin: 0;
+}
+
 .main {
+    margin-top: 15px;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -85,6 +90,12 @@
     border: 1px solid rgba(0, 0, 0, 0.349);
     text-transform: uppercase;
     font-weight: 600;
+    cursor: pointer;
+}
+
+.button:focus {
+    opacity: 0.9;
+    transition: all 50ms ease-in-out;
 }
 
 .button.collapsible {
@@ -175,6 +186,15 @@
     overflow: hidden;
     transition: all .5s ease-in-out;
     display: none;
+}
+
+.top-notification {
+    width: 100%;
+    background-color: rgb(249, 255, 169);
+    padding: 15px;
+    color: rgb(47, 47, 47);
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 1.15em;
 }
 
 @media (max-width: 480px) {
