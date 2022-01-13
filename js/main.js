@@ -70,6 +70,11 @@ function deleteBookFromLibrary(instance) {
 
 /* Handle document elements */
 
+const booksContainer = document.querySelector("#booksContainer");
+const insertBookForm = document.querySelector("#insertBookForm");
+const insertBookButton = document.querySelector("#insertBookButton");
+const expandFormButton = document.querySelector("#expandFormButton");
+
 // Set classes and element text according to the bookRead argument
 function setReadBookElementAttributes(bookRead, readButton, bookDiv) {
     if (bookRead) {
@@ -85,8 +90,93 @@ function setReadBookElementAttributes(bookRead, readButton, bookDiv) {
     }
 }
 
-const insertBookForm = document.querySelector("#insertBookForm");
-const insertBookButton = document.querySelector("#insertBookButton");
+function createBookDOMElement(book) {
+    const bookDiv = document.createElement("div");
+    bookDiv.classList.add("book");
+    
+    // Book top div
+    const bookTop = document.createElement("div");
+    bookTop.classList.add("book-top");
+
+    const bookCover = document.createElement("img");
+    bookCover.classList.add("book-cover");
+    bookCover.setAttribute("src", book.coverUrl);
+    bookCover.setAttribute("alt", `${book.title} cover picture`);
+    bookTop.appendChild(bookCover);
+
+    const bookInfo = document.createElement("div");
+    bookInfo.classList.add("book-info");
+    bookTop.appendChild(bookInfo);
+
+    const bookTitle = document.createElement("div");
+    bookTitle.innerHTML = `Title: <span class='book-info-title'>${book.title || ""}</span>`;
+    bookInfo.appendChild(bookTitle);
+
+    const bookAuthor = document.createElement("div");
+    bookAuthor.innerHTML = `Author: <span class='book-info-author'>${book.author || ""}</span>`;
+    bookInfo.appendChild(bookAuthor);
+
+    const bookPages = document.createElement("div");
+    bookPages.innerHTML = `Pages: <span class='book-info-pages'>${book.pages || ""}</span>`;
+    bookInfo.appendChild(bookPages);
+
+    const bookYear = document.createElement("div");
+    bookYear.innerHTML = `Year: <span class='book-info-year'>${book.year || ""}</span>`;
+    bookInfo.appendChild(bookYear);
+
+    const bookGenre = document.createElement("div");
+    bookGenre.innerHTML = `Genre: <span class='book-info-genre'>${book.genre || ""}</span>`;
+    bookInfo.appendChild(bookGenre);
+
+    // Book bottom div
+    const bookBottom = document.createElement("div");
+    bookBottom.classList.add("book-bottom");
+
+    const bookDescription = document.createElement("div");
+    bookDescription.classList.add("book-description");
+    bookDescription.innerText = book.description || "";
+    bookBottom.appendChild(bookDescription);
+
+    // Mark as read/unread button
+    const readButton = document.createElement("button");
+    readButton.classList.add("button");
+    setReadBookElementAttributes(book.read, readButton, bookDiv);
+    readButton.addEventListener("click", function(event) {
+        const button = event.target;
+        book.toggleRead(true);
+        setReadBookElementAttributes(book.read, readButton, bookDiv);
+    });
+
+    // Delete button
+    const deleteBook = document.createElement("button");
+    deleteBook.innerText = "Remove";
+    deleteBook.classList.add("button", "button-red");
+    deleteBook.addEventListener("click", function() {
+        if(window.confirm("Are you sure you want to proceed?")) {
+            deleteBookFromLibrary(book);
+            booksContainer.removeChild(bookDiv);
+        }
+    });
+    
+    // Create buttons container and add the buttons
+    const bookButtons = document.createElement("div");
+    bookButtons.classList.add("buttons-container");
+    bookButtons.appendChild(readButton);
+    bookButtons.appendChild(deleteBook);
+
+    bookBottom.appendChild(bookButtons);
+
+    bookDiv.appendChild(bookTop);
+    bookDiv.appendChild(bookBottom);
+
+    booksContainer.appendChild(bookDiv);
+}
+
+if(booksContainer) {
+    library.forEach(book => {
+        createBookDOMElement(book);
+    })    
+}
 
 if(insertBookButton) {
     insertBookButton.addEventListener("click", function(event) {
@@ -108,92 +198,13 @@ if(insertBookButton) {
                 (formData.get("read") === 'on' ? true : false)
             );
             
-            console.log(newBook);
+            addBookToLibrary(newBook);
+            createBookDOMElement(newBook);
         }
     });
 }
 
-const booksContainer = document.querySelector("#booksContainer");
-
-if(booksContainer) {
-    library.forEach(book => {
-        const bookDiv = document.createElement("div");
-        bookDiv.classList.add("book");
-        
-        // Book top div
-        const bookTop = document.createElement("div");
-        bookTop.classList.add("book-top");
-
-        const bookCover = document.createElement("img");
-        bookCover.classList.add("book-cover");
-        bookCover.setAttribute("src", book.coverUrl);
-        bookTop.appendChild(bookCover);
-
-        const bookInfo = document.createElement("div");
-        bookInfo.classList.add("book-info");
-        bookTop.appendChild(bookInfo);
-
-        const bookTitle = document.createElement("div");
-        bookTitle.innerHTML = `Title: <span class='book-info-title'>${book.title || ""}</span>`;
-        bookInfo.appendChild(bookTitle);
-
-        const bookAuthor = document.createElement("div");
-        bookAuthor.innerHTML = `Author: <span class='book-info-author'>${book.author || ""}</span>`;
-        bookInfo.appendChild(bookAuthor);
-
-        const bookPages = document.createElement("div");
-        bookPages.innerHTML = `Pages: <span class='book-info-pages'>${book.pages || ""}</span>`;
-        bookInfo.appendChild(bookPages);
-
-        const bookYear = document.createElement("div");
-        bookYear.innerHTML = `Year: <span class='book-info-year'>${book.year || ""}</span>`;
-        bookInfo.appendChild(bookYear);
-
-        const bookGenre = document.createElement("div");
-        bookGenre.innerHTML = `Genre: <span class='book-info-genre'>${book.genre || ""}</span>`;
-        bookInfo.appendChild(bookGenre);
-
-        // Book bottom div
-        const bookBottom = document.createElement("div");
-        bookBottom.classList.add("book-bottom");
-
-        const bookDescription = document.createElement("div");
-        bookDescription.classList.add("book-description");
-        bookDescription.innerText = book.description || "";
-        bookBottom.appendChild(bookDescription);
-
-        // Mark as read/unread button
-        const readButton = document.createElement("button");
-        readButton.classList.add("button");
-        setReadBookElementAttributes(book.read, readButton, bookDiv);
-        readButton.addEventListener("click", function(event) {
-            const button = event.target;
-            book.toggleRead(true);
-            setReadBookElementAttributes(book.read, readButton, bookDiv);
-        });
-
-        // Delete button
-        const deleteBook = document.createElement("button");
-        deleteBook.innerText = "Remove";
-        deleteBook.classList.add("button", "button-red");
-        deleteBook.addEventListener("click", function() {
-            if(window.confirm("Are you sure you want to proceed?")) {
-                deleteBookFromLibrary(book);
-                booksContainer.removeChild(bookDiv);
-            }
-        });
-        
-        // Create buttons container and add the buttons
-        const bookButtons = document.createElement("div");
-        bookButtons.classList.add("buttons-container");
-        bookButtons.appendChild(readButton);
-        bookButtons.appendChild(deleteBook);
-
-        bookBottom.appendChild(bookButtons);
-
-        bookDiv.appendChild(bookTop);
-        bookDiv.appendChild(bookBottom);
-
-        booksContainer.appendChild(bookDiv);
-    })    
-}
+expandFormButton.addEventListener("click", function(event) {
+    insertBookForm.classList.toggle("collapsed");
+    expandFormButton.classList.toggle("active");
+});

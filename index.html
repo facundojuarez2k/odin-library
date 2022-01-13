@@ -18,33 +18,41 @@
     <main class="main">
 
         <div class="books-container" id="booksContainer">
-            <div>
-                <h4>Add a book</h4>
-                <form id="insertBookForm" class="form">
-                    <label>Title</label>
-                    <input type="text" name="title" required="required" placeholder="Title" />
-
-                    <label>Author</label>
-                    <input type="text" name="author" required="required" placeholder="Author name" />
-
-                    <label>Year</label>
-                    <input type="number" name="year" required="required" placeholder="Year" />
-
-                    <label>Genre</label>
-                    <input type="text" name="genre" required="required" placeholder="Genre" />
-
-                    <label>Pages</label>
-                    <input type="number" name="pages" required="required" placeholder="Number of pages" />
-
-                    <label>Description</label>
-                    <textarea name="description" required="required" maxlength="400" rows="5" cols="50" placeholder="Add a short description"></textarea>
-
-                    <label>Book cover URL</label>
-                    <input type="text" name="coverurl" placeholder="https://..." />
-
-                    <label>Read</label>
-                    <input type="checkbox" name="read" />
-
+            <div class="form-wrapper">
+                <button id="expandFormButton" class="button button-lg collapsible">Add a book</button>
+                <form id="insertBookForm" class="form collapsed">
+                    <div class="input-group">
+                        <label>Title</label>
+                        <input type="text" name="title" required="required" placeholder="Title" />
+                    </div>
+                    <div class="input-group">
+                        <label>Author</label>
+                        <input type="text" name="author" required="required" placeholder="Author name" />
+                    </div>
+                    <div class="input-group">
+                        <label>Year</label>
+                        <input type="number" name="year" required="required" placeholder="Year" />
+                    </div>
+                    <div class="input-group">
+                        <label>Genre</label>
+                        <input type="text" name="genre" required="required" placeholder="Genre" />
+                    </div>
+                    <div class="input-group">
+                        <label>Pages</label>
+                        <input type="number" name="pages" required="required" placeholder="Number of pages" />
+                    </div>
+                    <div class="input-group">
+                        <label>Description</label>
+                        <textarea name="description" required="required" maxlength="400" rows="5" placeholder="Add a short description"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label>Book cover URL</label>
+                        <input type="text" name="coverurl" required="required" placeholder="https://..." />
+                    </div>
+                    <div class="input-group input-checkbox">
+                        <label>Read</label>
+                        <input type="checkbox" name="read" />
+                    </div>
                     <button id="insertBookButton" class="button button-blue">Add</button>
                 </form>
             </div>
